@@ -23,7 +23,7 @@ public class Baraja {
 				repetida = true;
 			}
 			i++;
-		}while(!repetida || getCarta(i)!=null);
+		}while(!repetida && getCarta(i)!=null && i<52);
 		return repetida;
 	}
 	
