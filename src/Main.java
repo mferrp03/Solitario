@@ -32,11 +32,12 @@ public class Main {
 				System.out.println("Entrada incorrecta.");
 			}
 			else {
+				int numCarta = 0;
 				for(int i=0; i<linea.length();i++) {
-					int numCarta = 0;
 					if(linea.charAt(i)!=' ') {
 						addCarta(baraja,linea.charAt(i),linea.charAt(i+1),numCarta);
 						numCarta++;
+						i++;
 					}
 				}
 				lineas++;
@@ -83,39 +84,66 @@ public class Main {
 			k++;
 		}while(pilas[k+3]==null || k == 51);	
 	}
+	void iniciarPilas() {
+		for(int i =0; i<52; i++) {
+			pilas[i]=null;
+		}
+	}
 	void solucionar(Baraja baraja) {
 		int num = 0;
 		int k = 0;
 		int movimientos;
 		do {
-			pilas[num].addCarta(baraja.getCarta(num));	
-		}while(num<52);
-		do {
-			movimientos = 0;
-			if (pilas[k]==null) {
-				desplazarPilas(k);
-			}
-			else if (k-1 >= 0) {
-				if(k-3 >= 0) {
-					if (moverCartas(k,3)){
-						movimientos++;	
-					}
-				
-					else if(moverCartas(k,1)) {
-						movimientos++;	
-					}
-						
+			int c = 0;
+			iniciarPilas();
+			do {
+				pilas[c].addCarta(baraja.getCarta(c));
+				c++;
+			}while(c<52);
+			do {
+				movimientos = 0;
+				if (pilas[k]==null) {
+					desplazarPilas(k);
 				}
-				else if	(moverCartas(k,1)){
-						movimientos++;
+				else if (k-1 >= 0) {
+					if(k-3 >= 0) {
+						if (moverCartas(k,3)){
+							movimientos++;	
+						}
+				
+						else if(moverCartas(k,1)) {
+							movimientos++;	
+						}
+						
 					}
+					else if	(moverCartas(k,1)){
+							movimientos++;
+						}
+				}
+				if (movimientos == 0) {
+					k++;
+				}
+				if (movimientos == 1) {
+					k=0;
+				}
+			}while(movimientos !=0 && k==52);
+			if(pilas[0].numCartas() == 52)
+				System.out.println("Ha quedado 1 pila: 52");
+			else {
+				int i = 0;
+				int aux[] = new int [52];
+				do {
+					aux[i]=pilas[i].numCartas();
+					i++;
+				}while(pilas[i]!=null);
+				String salida = new String();
+				salida = "Han quedado "+ (i-1) + " pilas:";
+				for(int j = 0; j<i; j++) {
+					salida += " "+ (aux[j]);
+				}
+				System.out.println(salida);
 			}
-			if (movimientos == 0) {
-				k++;
-			}
-			if (movimientos == 1) {
-				k=0;
-			}
-		}while(movimientos !=0 && k==52);
+			num++;
+		}while(num<this.numBarajas);
 	}
 }

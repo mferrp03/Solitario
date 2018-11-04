@@ -2,6 +2,7 @@
 public class Carta {
 	char[] carta;
 	Carta(char numero, char palo){
+		carta = new char[2];
 		carta[0] = numero;
 		carta[1] = palo;
 	}
